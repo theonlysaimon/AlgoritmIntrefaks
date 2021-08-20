@@ -1,1 +1,1 @@
-# AlgoritmIntrefaks
+# InterfaksPsuti
