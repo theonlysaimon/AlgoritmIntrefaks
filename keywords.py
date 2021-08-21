@@ -2,6 +2,7 @@ import json
 from pymystem3 import Mystem
 import string
 import os 
+import numpy as np
 
 while exit:
 #загрузка dataset
