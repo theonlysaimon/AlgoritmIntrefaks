@@ -3,17 +3,21 @@ from pymystem3 import Mystem
 import string
 import os 
 
-print("Введите путь к файлу:    ")
-path = input()   
-
-print("Введите количество прогоняемых кластеров:    ")
-clast = int(input())
-
 #загрузка dataset
-with open(path, "r", encoding="utf8") as read_file:
-    ng_1_data = json.load(read_file)
+while True:
+    try:
+        print("Введите путь к файлу:    ")
+        path = input()  
 
-with open ('data/stop_ru.txt', 'r', encoding="utf8") as stop_file:
+        with open(path, "r", encoding="utf8") as read_file:
+            ng_1_data = json.load(read_file)
+        break
+    except ValueError:
+        print("Ошибка значения")
+    except IOError:
+        print("Файл не найден")
+
+with open ("\data\stop_ru.txt", 'r', encoding="utf8") as stop_file:
     rus_stops = [word.strip() for word in stop_file.readlines()] 
 
 extended_punctuation = string.punctuation + '—»«...'
@@ -36,7 +40,15 @@ def keywords_most_frequent_with_stop_and_lemm (some_text, num_most_freq, stoplis
                        if passed_filter(word, stoplist)]
     return [word_freq_pair[0] for word_freq_pair in FreqDist(lemmatized_text).most_common(num_most_freq)]
 
-for item in ng_1_data[:clast]:
-    print ('Эталонные ключевые слова: ', item['title'])
-    print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
-    print (" ")
+while True:
+    try:
+        print("Введите количество прогоняемых кластеров:    ")
+
+        clast = int(input())
+        for item in ng_1_data[:clast]:
+            print ('Эталонные ключевые слова: ', item['title'])
+            print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
+            print (" ")
+        break
+    except ValueError:
+        print("Неверное значение")   
