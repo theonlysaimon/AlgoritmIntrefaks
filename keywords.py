@@ -34,5 +34,5 @@ def keywords_most_frequent_with_stop_and_lemm (some_text, num_most_freq, stoplis
 for item in ng_1_data[:10]:
     print ('Эталонные ключевые слова: ', item['title'])
     print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
-    print ()
+    print (" ")
 
