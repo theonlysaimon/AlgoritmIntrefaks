@@ -60,6 +60,15 @@ for item in ng_1_data:
     manual_keywords.append(item['title'])
     full_texts.append(item['news'][1]['body'])
 
+"""
 #вывод результатов на экран
 print ('Эталонные ключевые слова: ', manual_keywords [:1])
-print ('Самые частотные слова: ', produce_tf_idf_keywords(full_texts[:1], 6))
+print ('Самые частотные слова: ', produce_tf_idf_keywords(full_texts[:5], 6))
+"""
+
+for item in ng_1_data[:5]:
+    i=1
+    print ('Эталонные ключевые слова: ', manual_keywords[:i])
+    print ('Первые и последние слова', produce_tf_idf_keywords(full_texts[:5], 6))
+    print ()
+    i+=1
