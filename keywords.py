@@ -1,13 +1,8 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
-from itertools import combinations
-from collections import Counter
-import np
 import json
 from pymystem3 import Mystem
-from nltk import FreqDist
 import string
 import os 
-import re
+
     
 #загрузка dataset
 with open("data/dataset_public.json", "r", encoding="utf8") as read_file:
@@ -20,6 +15,7 @@ extended_punctuation = string.punctuation + '—»«...'
 moi_analizator = Mystem()
 
 def passed_filter (some_word, stoplist):
+    import re
     some_word = some_word.strip()
     if some_word in extended_punctuation:
         return False
@@ -30,6 +26,7 @@ def passed_filter (some_word, stoplist):
     return True
 
 def keywords_most_frequent_with_stop_and_lemm (some_text, num_most_freq, stoplist):
+    from nltk import FreqDist
     lemmatized_text = [word for word in moi_analizator.lemmatize(some_text.lower()) 
                        if passed_filter(word, stoplist)]
     return [word_freq_pair[0] for word_freq_pair in FreqDist(lemmatized_text).most_common(num_most_freq)]
@@ -39,6 +36,7 @@ def preprocess_for_tfidif (some_text):
     return (' '.join(lemmatized_text)) # поскольку tfidf векторайзер принимает на вход строку
 
 def produce_tf_idf_keywords (some_texts, number_of_words):
+    from sklearn.feature_extraction.text import TfidfVectorizer
     make_tf_idf = TfidfVectorizer (stop_words=rus_stops)
     texts_as_tfidf_vectors=make_tf_idf.fit_transform(preprocess_for_tfidif(text) for text in some_texts)
     id2word = {i:word for i,word in enumerate(make_tf_idf.get_feature_names())} 
@@ -52,28 +50,23 @@ def produce_tf_idf_keywords (some_texts, number_of_words):
         top_words_for_this_text = words_for_this_text [0, :-1*(number_of_words+1):-1]
         # возращаем результат
         return [id2word[w] for w in top_words_for_this_text]
-
+"""
 manual_keywords = [] ## сюда запишем все ключевые слова, приписанные вручную
 full_texts = [] ## сюда тексты
 
 for item in ng_1_data[:1]:
     manual_keywords.append(item['title'])
-#print(manual_keywords)
 
 for item in ng_1_data[:5]:
     full_texts.append(item['news'][1]['body'])
-#print(full_texts)
 
 #вывод результатов на экран
 print ('Эталонные ключевые слова: ', manual_keywords [:1])
 print ('Самые частотные слова: ', produce_tf_idf_keywords(full_texts[:5], 5))
-
-
 """
-i=1
-for item in ng_1_data[:5]:
-    print ('Эталонные ключевые слова: ', manual_keywords[:i])
-    print ('Первые и последние слова', produce_tf_idf_keywords(full_texts, 6))
+
+for item in ng_1_data[:10]:
+    print ('Эталонные ключевые слова: ', item['title'])
+    print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
     print ()
-    i+=1
-"""
+
