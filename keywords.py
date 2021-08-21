@@ -3,9 +3,14 @@ from pymystem3 import Mystem
 import string
 import os 
 
-    
+print("Введите путь к файлу:    ")
+path = input()   
+
+print("Введите количество прогоняемых кластеров:    ")
+clast = input()
+
 #загрузка dataset
-with open("data/dataset_public.json", "r", encoding="utf8") as read_file:
+with open(path, "r", encoding="utf8") as read_file:
     ng_1_data = json.load(read_file)
 
 with open ('data/stop_ru.txt', 'r', encoding="utf8") as stop_file:
@@ -31,8 +36,7 @@ def keywords_most_frequent_with_stop_and_lemm (some_text, num_most_freq, stoplis
                        if passed_filter(word, stoplist)]
     return [word_freq_pair[0] for word_freq_pair in FreqDist(lemmatized_text).most_common(num_most_freq)]
 
-for item in ng_1_data[:10]:
+for item in ng_1_data[:clast]:
     print ('Эталонные ключевые слова: ', item['title'])
     print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
     print (" ")
-
