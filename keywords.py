@@ -2,6 +2,7 @@ import json
 from pymystem3 import Mystem
 import string
 import os 
+
 while exit:
 #загрузка dataset
     while True:
@@ -18,7 +19,7 @@ while exit:
         except IOError:
             print("Файл не найден")
 
-    with open ("D:/GitHub/AlgoritmIntrefaks/data/stop_ru.txt", 'r', encoding="utf8") as stop_file:
+    with open ("C:/Users/Monst/Documents/GitHub/AlgoritmIntrefaks/data/stop_ru.txt", 'r', encoding="utf8") as stop_file:
         rus_stops = [word.strip() for word in stop_file.readlines()] 
 
     extended_punctuation = string.punctuation + '—»«...'
@@ -50,13 +51,17 @@ while exit:
                 print ('Эталонные ключевые слова: ', item['title'])
                 print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
                 print ("")
-                print("Работа завершена")
-                print("Желаете продолжить? y/n")
-                exitpool = input()
-                if exitpool == 'n':
-                    exit = False
             break
         except ValueError:
             print("Неверное значение")  
-print("ZhopaKozi") 
 
+    print("Работа завершена")
+    try:
+        print("Желаете продолжить? y/n")
+        exitpool = input()
+        if exitpool == 'n':
+            exit = False
+        elif exitpool == 'y':
+            exit = True
+    except ValueError:
+        print("Введите y или n")
