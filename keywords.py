@@ -19,7 +19,7 @@ while exit:
         except IOError:
             print("Файл не найден")
 
-    with open ("C:/Users/Monst/Documents/GitHub/AlgoritmIntrefaks/data/stop_ru.txt", 'r', encoding="utf8") as stop_file:
+    with open ("data/stop_ru.txt", 'r', encoding="utf8") as stop_file:
         rus_stops = [word.strip() for word in stop_file.readlines()] 
 
     extended_punctuation = string.punctuation + '—»«...'
