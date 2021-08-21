@@ -7,8 +7,9 @@ import os
 while True:
     try:
         print("Введите путь к файлу:    ")
-        path = input()  
-
+        path = input()        
+        path = path.replace('\\','/')
+        
         with open(path, "r", encoding="utf8") as read_file:
             ng_1_data = json.load(read_file)
         break
@@ -17,7 +18,7 @@ while True:
     except IOError:
         print("Файл не найден")
 
-with open ("\data\stop_ru.txt", 'r', encoding="utf8") as stop_file:
+with open ("D:/GitHub/AlgoritmIntrefaks/data/stop_ru.txt", 'r', encoding="utf8") as stop_file:
     rus_stops = [word.strip() for word in stop_file.readlines()] 
 
 extended_punctuation = string.punctuation + '—»«...'
