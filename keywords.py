@@ -66,5 +66,7 @@ while exit:
             elif exitpool == 'y':
                 exit = True
                 break
+            elif exitpool != 'n' or exitpool != 'y':
+                print("Неверный ввод")
         except ValueError:
             print("Введите y или n")
