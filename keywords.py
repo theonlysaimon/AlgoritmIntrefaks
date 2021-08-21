@@ -56,14 +56,18 @@ def produce_tf_idf_keywords (some_texts, number_of_words):
 manual_keywords = [] ## сюда запишем все ключевые слова, приписанные вручную
 full_texts = [] ## сюда тексты
 
-for item in ng_1_data:
+for item in ng_1_data[:1]:
     manual_keywords.append(item['title'])
-    full_texts.append(item['news'][1]['body'])
+#print(manual_keywords)
 
+for item in ng_1_data[:5]:
+    full_texts.append(item['news'][1]['body'])
+#print(full_texts)
 
 #вывод результатов на экран
 print ('Эталонные ключевые слова: ', manual_keywords [:1])
 print ('Самые частотные слова: ', produce_tf_idf_keywords(full_texts[:5], 5))
+
 
 """
 i=1
