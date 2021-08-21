@@ -7,7 +7,7 @@ print("Введите путь к файлу:    ")
 path = input()   
 
 print("Введите количество прогоняемых кластеров:    ")
-clast = input()
+clast = int(input())
 
 #загрузка dataset
 with open(path, "r", encoding="utf8") as read_file:
