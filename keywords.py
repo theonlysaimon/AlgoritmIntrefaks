@@ -56,12 +56,14 @@ while exit:
             print("Неверное значение")  
 
     print("Работа завершена")
-    try:
-        print("Желаете продолжить? y/n")
-        exitpool = input()
-        if exitpool == 'n':
-            exit = False
-        elif exitpool == 'y':
-            exit = True
-    except ValueError:
-        print("Введите y или n")
+    while True:
+        try:
+            print("Желаете продолжить? y/n")
+            exitpool = input()
+            if exitpool == 'n':
+                exit = False
+            elif exitpool == 'y':
+                exit = True
+                break
+        except ValueError:
+            print("Введите y или n")
