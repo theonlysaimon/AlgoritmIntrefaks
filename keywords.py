@@ -9,22 +9,32 @@ import string
 import os 
 import re
     
-
-with open("D:\\Desktop\\Study\\GitHub\\InterfaksPsuti\\data\\dataset_public.json", "r", encoding="utf8") as read_file:
+#загрузка dataset
+with open("data/dataset_public.json", "r", encoding="utf8") as read_file:
     ng_1_data = json.load(read_file)
 
-with open ('D:\\Desktop\\Study\\GitHub\\InterfaksPsuti\\data\\stop_ru.txt', 'r', encoding="utf8") as stop_file:
+with open ('data/stop_ru.txt', 'r', encoding="utf8") as stop_file:
     rus_stops = [word.strip() for word in stop_file.readlines()] 
+
+"""
+def take_step(n, matrix):
+    rang = len(matrix[n])
+    # выбираем узел из заданного интервала, на основе распределения из матрицы совстречаемости
+    if np.any(matrix[n]):
+        next_n = np.random.choice(range(rang), p=matrix[n])
+    else:
+        next_n = np.random.choice(range(rang))
+    return next_n
 
 def get_kws(text, top=6, window_size=5, random_p=0.1):
 
     vocab = set(text)
     word2id = {w:i for i, w in enumerate(vocab)}
     id2word = {i:w for i, w in enumerate(vocab)}
-    # преобразуем слова в индексы для удобства
+    # преобразуем слова в индексы
     ids = [word2id[word] for word in text]
 
-    # создадим матрицу совстречаемости
+    # создадание матрицу совстречаемости
     m = np.zeros((len(vocab), len(vocab)))
 
     # пройдемся окном по всему тексту
@@ -59,24 +69,16 @@ def get_kws(text, top=6, window_size=5, random_p=0.1):
         
         if go_random:
             n = np.random.choice(len(vocab))
-        ### 
         n = take_step(n, m)
         # записываем узлы, в которых были
         c.update([n])
     
     # вернем топ-N наиболее часто встретившихся сл
     return [id2word[i] for i, count in c.most_common(top)]
-
-def take_step(n, matrix):
-    rang = len(matrix[n])
-    # выбираем узел из заданного интервала, на основе распределения из матрицы совстречаемости
-    if np.any(matrix[n]):
-        next_n = np.random.choice(range(rang), p=matrix[n])
-    else:
-        next_n = np.random.choice(range(rang))
-    return next_n
+"""
 
 extended_punctuation = string.punctuation + '—»«...'
+moi_analizator = Mystem()
 
 def passed_filter (some_word, stoplist):
     some_word = some_word.strip()
@@ -88,8 +90,6 @@ def passed_filter (some_word, stoplist):
         return False
     return True
 
-moi_analizator = Mystem()
-
 def keywords_most_frequent_with_stop_and_lemm (some_text, num_most_freq, stoplist):
     lemmatized_text = [word for word in moi_analizator.lemmatize(some_text.lower()) 
                        if passed_filter(word, stoplist)]
@@ -97,8 +97,7 @@ def keywords_most_frequent_with_stop_and_lemm (some_text, num_most_freq, stoplis
 
 def preprocess_for_tfidif (some_text):
     lemmatized_text = moi_analizator.lemmatize(some_text.lower())
-    return (' '.join(lemmatized_text)) # поскольку tfidf векторайзер принимает на вход строку, 
-    #после лемматизации склеим все обратно
+    return (' '.join(lemmatized_text)) # поскольку tfidf векторайзер принимает на вход строку
 
 def produce_tf_idf_keywords (some_texts, number_of_words):
     make_tf_idf = TfidfVectorizer (stop_words=rus_stops)
@@ -113,23 +112,21 @@ def produce_tf_idf_keywords (some_texts, number_of_words):
         ## берем число слов с конца, равное number_of_words 
         top_words_for_this_text = words_for_this_text [0, :-1*(number_of_words+1):-1]
         ## печатаем результат
-        print([id2word[w] for w in top_words_for_this_text])
+        return [id2word[w] for w in top_words_for_this_text]
 
-
-for item in ng_1_data[:10]:
+""""
+for item in ng_1_data[:1]:
     print ('Эталонные ключевые слова: ', item['title'])
     print ('Самые частотные слова: ',  keywords_most_frequent_with_stop_and_lemm (item['news'][1]['body'], 6, rus_stops))
     print ()
-
-
 """
+
 manual_keywords = [] ## сюда запишем все ключевые слова, приписанные вручную
 full_texts = [] ## сюда тексты
 
 for item in ng_1_data:
-    manual_keywords.append(item['keywords'])
-    full_texts.append(item['content'])
+    manual_keywords.append(item['title'])
+    full_texts.append(item['news'][1]['body'])
 
-produce_tf_idf_keywords (full_texts[:20], 6)
-manual_keywords [:20]
-"""
+print ('Эталонные ключевые слова: ', manual_keywords [:1])
+print ('Самые частотные слова: ', produce_tf_idf_keywords(full_texts[:1], 6))
