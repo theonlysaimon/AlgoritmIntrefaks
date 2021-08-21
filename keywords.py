@@ -62,6 +62,7 @@ while exit:
             exitpool = input()
             if exitpool == 'n':
                 exit = False
+                break
             elif exitpool == 'y':
                 exit = True
                 break
